@@ -1,0 +1,4 @@
+[submodule "thirdparty/csv-parser-fork"]
+	path = thirdparty/csv-parser-fork
+	url = https://github.com/hzqst/csv-parser-fork
+	branch = MHSV

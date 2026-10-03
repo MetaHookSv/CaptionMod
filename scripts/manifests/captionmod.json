@@ -1,0 +1,261 @@
+{
+  "schemaVersion": 1,
+  "name": "captionmod",
+  "indexUrl": "https://hlnd2t.github.io/GoldSrc_VibeSignatures/gamesymbols/index.json",
+  "gameVersions": [
+    "cof-5936",
+    "cstrike-10210",
+    "cstrike-3248",
+    "cstrike-3647",
+    "cstrike-4554",
+    "cstrike-6153",
+    "cstrike-8684",
+    "czero-10210",
+    "czero-8684",
+    "czeror-10210",
+    "czeror-8684",
+    "hl-10210",
+    "hl-3248",
+    "hl-3266",
+    "hl-3329",
+    "hl-3647",
+    "hl-4554",
+    "hl-6153",
+    "hl-8684",
+    "svencoop-10257",
+    "svencoop-8948"
+  ],
+  "symbols": {
+    "engine": {
+      "S_FindName": "function",
+      "S_StartDynamicSound": "function",
+      "S_StartStaticSound": "function",
+      "S_LoadSound": "function",
+      "TextMessageParse": "function",
+      "COM_ExplainDisconnection": "function",
+      "COM_ExtendedExplainDisconnection": "function",
+      "SequenceGetSentenceByIndex": "function",
+      "cl_time": "global",
+      "cl_oldtime": "global",
+      "cl_viewentity": "global",
+      "listener_origin": "global",
+      "cszrawsentences": "global",
+      "rgpszrawsentence": "global",
+      "scr_drawloading": "global"
+    }
+  },
+  "symbolExemptions": {
+    "S_FindName": [
+      "cstrike-10210",
+      "cstrike-3248",
+      "cstrike-3647",
+      "cstrike-4554",
+      "cstrike-6153",
+      "cstrike-8684",
+      "czero-10210",
+      "czero-8684",
+      "czeror-10210",
+      "czeror-8684"
+    ],
+    "S_StartDynamicSound": [
+      "cstrike-10210",
+      "cstrike-3248",
+      "cstrike-3647",
+      "cstrike-4554",
+      "cstrike-6153",
+      "cstrike-8684",
+      "czero-10210",
+      "czero-8684",
+      "czeror-10210",
+      "czeror-8684"
+    ],
+    "S_StartStaticSound": [
+      "cstrike-10210",
+      "cstrike-3248",
+      "cstrike-3647",
+      "cstrike-4554",
+      "cstrike-6153",
+      "cstrike-8684",
+      "czero-10210",
+      "czero-8684",
+      "czeror-10210",
+      "czeror-8684"
+    ],
+    "S_LoadSound": [
+      "cstrike-10210",
+      "cstrike-3248",
+      "cstrike-3647",
+      "cstrike-4554",
+      "cstrike-6153",
+      "cstrike-8684",
+      "czero-10210",
+      "czero-8684",
+      "czeror-10210",
+      "czeror-8684"
+    ],
+    "TextMessageParse": [
+      "cstrike-10210",
+      "cstrike-3248",
+      "cstrike-3647",
+      "cstrike-4554",
+      "cstrike-6153",
+      "cstrike-8684",
+      "czero-10210",
+      "czero-8684",
+      "czeror-10210",
+      "czeror-8684"
+    ],
+    "COM_ExplainDisconnection": [
+      "cstrike-10210",
+      "cstrike-3248",
+      "cstrike-3647",
+      "cstrike-4554",
+      "cstrike-6153",
+      "cstrike-8684",
+      "czero-10210",
+      "czero-8684",
+      "czeror-10210",
+      "czeror-8684"
+    ],
+    "COM_ExtendedExplainDisconnection": [
+      "cstrike-10210",
+      "cstrike-3248",
+      "cstrike-3647",
+      "cstrike-4554",
+      "cstrike-6153",
+      "cstrike-8684",
+      "czero-10210",
+      "czero-8684",
+      "czeror-10210",
+      "czeror-8684"
+    ],
+    "SequenceGetSentenceByIndex": [
+      "cstrike-10210",
+      "cstrike-3248",
+      "cstrike-3647",
+      "cstrike-4554",
+      "cstrike-6153",
+      "cstrike-8684",
+      "czero-10210",
+      "czero-8684",
+      "czeror-10210",
+      "czeror-8684"
+    ],
+    "cl_time": [
+      "cstrike-10210",
+      "cstrike-3248",
+      "cstrike-3647",
+      "cstrike-4554",
+      "cstrike-6153",
+      "cstrike-8684",
+      "czero-10210",
+      "czero-8684",
+      "czeror-10210",
+      "czeror-8684"
+    ],
+    "cl_oldtime": [
+      "cstrike-10210",
+      "cstrike-3248",
+      "cstrike-3647",
+      "cstrike-4554",
+      "cstrike-6153",
+      "cstrike-8684",
+      "czero-10210",
+      "czero-8684",
+      "czeror-10210",
+      "czeror-8684"
+    ],
+    "cl_viewentity": [
+      "cstrike-10210",
+      "cstrike-3248",
+      "cstrike-3647",
+      "cstrike-4554",
+      "cstrike-6153",
+      "cstrike-8684",
+      "czero-10210",
+      "czero-8684",
+      "czeror-10210",
+      "czeror-8684"
+    ],
+    "listener_origin": [
+      "cstrike-10210",
+      "cstrike-3248",
+      "cstrike-3647",
+      "cstrike-4554",
+      "cstrike-6153",
+      "cstrike-8684",
+      "czero-10210",
+      "czero-8684",
+      "czeror-10210",
+      "czeror-8684"
+    ],
+    "cszrawsentences": [
+      "cstrike-10210",
+      "cstrike-3248",
+      "cstrike-3647",
+      "cstrike-4554",
+      "cstrike-6153",
+      "cstrike-8684",
+      "czero-10210",
+      "czero-8684",
+      "czeror-10210",
+      "czeror-8684"
+    ],
+    "rgpszrawsentence": [
+      "cstrike-10210",
+      "cstrike-3248",
+      "cstrike-3647",
+      "cstrike-4554",
+      "cstrike-6153",
+      "cstrike-8684",
+      "czero-10210",
+      "czero-8684",
+      "czeror-10210",
+      "czeror-8684"
+    ],
+    "scr_drawloading": [
+      "cstrike-10210",
+      "cstrike-3248",
+      "cstrike-3647",
+      "cstrike-4554",
+      "cstrike-6153",
+      "cstrike-8684",
+      "czero-10210",
+      "czero-8684",
+      "czeror-10210",
+      "czeror-8684"
+    ]
+  },
+  "optionalSymbols": {
+    "client": {
+      "GetClientColor": "function",
+      "GetTextColor": "function",
+      "g_LocationColor": "global"
+    }
+  },
+  "conditionalGroups": [
+    {
+      "when": [
+        "svencoop-10257",
+        "svencoop-8948"
+      ],
+      "symbols": {
+        "client": {
+          "CHud_GetBorderSize": "function",
+          "CClient_SoundEngine_LoadSoundList": "function",
+          "CClient_SoundEngine_LookupSoundBySample": "function",
+          "CClient_SoundEngine_LookupSoundBySentenceIndex": "function",
+          "CClient_SoundEngine_PlayFMODSound": "function",
+          "GetClientColor": "function",
+          "TeamFortressViewport_AllowedToPrintText": "function",
+          "TeamFortressViewport_IsScoreBoardVisible": "function",
+          "WeaponsResource_SelectSlot": "function",
+          "CClient_SoundEngine_m_pSoundEngine": "global",
+          "gHUD": "global",
+          "gViewPort": "global",
+          "CClient_SoundEngine.m_iSentenceCount": "structMember"
+        }
+      }
+    }
+  ]
+}
