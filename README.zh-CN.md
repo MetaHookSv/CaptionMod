@@ -7,7 +7,7 @@ HudText 和 SendAudio 消息显示字幕，用 CSV 字典（支持正则）动�
 为旧版 VGUI1 与 HUD 元素加入多字节字符渲染，并用起源 2007 风格的聊天框替换原聊天框。
 
 * 依赖 [VGUI2Extension](https://github.com/MetaHookSv/VGUI2Extension)，且必须先于本插件加载。
-* 与 [BugFixedHL](https://github.com/tmp64/BugfixedHL-Rebased) 不兼容：它使用了不同的 VGUI2 对象布局。
+* 与 [BugFixedHL](https://github.com/tmp64/BugfixedHL-Rebased) 不兼容：BugFixedHL使用了不同的 VGUI2 对象布局。
 
 ## 兼容性
 

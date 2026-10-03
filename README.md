@@ -11,7 +11,7 @@ chat dialog with a Source 2007 style one.
 * It requires [VGUI2Extension](https://github.com/MetaHookSv/VGUI2Extension), which must
   be loaded before this plugin.
 * It is not compatible with
-  [BugFixedHL](https://github.com/tmp64/BugfixedHL-Rebased), which uses a different VGUI2
+  [BugFixedHL](https://github.com/tmp64/BugfixedHL-Rebased), BugFixedHL uses a different VGUI2
   component layout.
 
 ## Compatibility

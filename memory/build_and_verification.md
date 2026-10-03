@@ -19,8 +19,8 @@ permalink: captionmod/build-and-verification
 Capstone/GLEW 库，post-build 还会把 DLL 复制到本机游戏目录。独立工程使用显式源码清单和
 CMake target 依赖，统一安装到 `install/x86/<configuration>/`。
 
-- `cmake/Sources.cmake` 逐项保留原 vcxproj 的 120 个 `ClCompile` 项：105 个 SDK / VGUI 单元
-  + 15 个插件单元。`MurmurHash2.cpp` 是**必需**的编译单元：`src/Viewport.h:145-146` 的
+- `cmake/Sources.cmake` 逐项保留原 vcxproj 的全部 120 个 `ClCompile` 项：106 个
+  MetaHook SDK / VGUI 单元 + 14 个本插件单元。`MurmurHash2.cpp` 是**必需**的编译单元：`src/Viewport.h:145-146` 的
   `CTypedDictionaryHasher::operator()` 调用 `MurmurHash2(...)`。删掉它会在链接期失败
   （实测 `LNK2001`/`LNK1120`：unresolved external symbol `?MurmurHash2@@YAIPBXHI@Z`），
   因为本工程编译的 MetaHook / SourceSDK 源码里没有同名定义（已全量 grep 确认）。
