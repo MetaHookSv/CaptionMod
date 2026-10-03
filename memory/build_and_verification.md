@@ -19,8 +19,11 @@ permalink: captionmod/build-and-verification
 Capstone/GLEW 库，post-build 还会把 DLL 复制到本机游戏目录。独立工程使用显式源码清单和
 CMake target 依赖，统一安装到 `install/x86/<configuration>/`。
 
-- `cmake/Sources.cmake` 保留原 120 个 `ClCompile` 项中的 119 个编译单元（114 个 SDK / VGUI 单元
-  + 14 个插件单元）；**未迁入 `MurmurHash2.cpp`**，它在 vcxproj 中列出但无任何引用点。
+- `cmake/Sources.cmake` 逐项保留原 vcxproj 的 120 个 `ClCompile` 项：105 个 SDK / VGUI 单元
+  + 15 个插件单元。`MurmurHash2.cpp` 是**必需**的编译单元：`src/Viewport.h:145-146` 的
+  `CTypedDictionaryHasher::operator()` 调用 `MurmurHash2(...)`。删掉它会在链接期失败
+  （实测 `LNK2001`/`LNK1120`：unresolved external symbol `?MurmurHash2@@YAIPBXHI@Z`），
+  因为本工程编译的 MetaHook / SourceSDK 源码里没有同名定义（已全量 grep 确认）。
 - 原工程的 `vgui_internal.h`（`ClInclude`）在源仓库中已不存在，未迁入。
 - MetaHook、VGUI2Extension 默认使用 FetchContent 获取固定提交，显式 `*_SOURCE_PATH`
   跳过对应获取。`hzqst/csv-parser-fork`（分支 `MHSV`，提交 `c393238`）是本仓库唯一 submodule，
@@ -74,6 +77,9 @@ Windows SDK 10.0.26100.0，CMake 3.31（VC-LTL 5.3.1 复用已缓存包）。
   未执行；其克隆、打包、7z 步骤只在本地配置阶段核对过参数。
 - 固定提交与同级仓库当前 HEAD 的一致性（MetaHook `ace5d9f7`、VGUI2Extension `834b7f7a`）
   只在本次配置时成立；同级仓库随后可能前进。
-- `MurmurHash2.cpp` 未迁入，若将来有新调用点需一并补回 `cmake/Sources.cmake`。
+- `MurmurHash2.cpp` / `MurmurHash2.h` 全部迁入且必须保留：`Viewport.h` 的
+  `CTypedDictionaryHasher` 直接调用 `MurmurHash2`，删掉该 TU 会链接失败。它只实现了
+  `MurmurHash2`（其余 `MurmurHash64A/64B/2A/Neutral2/Aligned2` 无调用点但与该函数同处一个
+  公共领域源文件，未做裁剪）。
 - 历史记录不属于本次证据：`gamedata-migration.md` 与 `CaptionMod.md` 中的地址、偏移与
   二进制等价性结论来自源仓库，不代表本仓库已复现。
