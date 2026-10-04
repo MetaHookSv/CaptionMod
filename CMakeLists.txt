@@ -69,7 +69,6 @@ install(FILES "$<TARGET_PDB_FILE:CaptionMod>" DESTINATION svencoop/metahook/plug
 foreach(mod svencoop svencoop_hidpi svencoop_schinese gearbox echoes)
     install(DIRECTORY "assets/${mod}/" DESTINATION "${mod}")
 endforeach()
-install(DIRECTORY include/ DESTINATION include)
 
 # CaptionMod ships its own gamedata catalog, pruned to the symbols it resolves,
 # in a nested directory the launcher's catalog loader merges
