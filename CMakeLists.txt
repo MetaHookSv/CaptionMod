@@ -77,13 +77,13 @@ install(DIRECTORY include/ DESTINATION include)
 # synchronizer downloads the upstream catalog into a persistent cache, prunes
 # it, and publishes the result.
 option(CAPTIONMOD_SYNC_GAMEDATA "Download and prune CaptionMod's gamedata catalog before building" ON)
-set(CAPTIONMOD_GAMEDATA_DIR "${CMAKE_BINARY_DIR}/assets/svencoop/metahook/gamedata/captionmod" CACHE PATH "CaptionMod gamedata catalog directory")
+set(CAPTIONMOD_GAMEDATA_DIR "${PROJECT_BINARY_DIR}/assets/svencoop/metahook/gamedata/captionmod" CACHE PATH "CaptionMod gamedata catalog directory")
 if(CAPTIONMOD_SYNC_GAMEDATA)
     find_package(Python3 REQUIRED COMPONENTS Interpreter)
     add_custom_target(CaptionModGameData
         COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/scripts/sync-gamedata.py"
             --manifest "${CMAKE_CURRENT_SOURCE_DIR}/scripts/manifests/captionmod.json"
-            --target-dir "${CAPTIONMOD_GAMEDATA_DIR}" --temp-root "${CMAKE_BINARY_DIR}/gamedata-sync"
+            --target-dir "${CAPTIONMOD_GAMEDATA_DIR}" --temp-root "${PROJECT_BINARY_DIR}/gamedata-sync"
         COMMENT "Synchronizing and validating CaptionMod gamedata"
         VERBATIM
     )
