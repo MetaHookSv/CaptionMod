@@ -25,7 +25,7 @@ CMake target 依赖，统一安装到 `install/x86/<configuration>/`。
   （实测 `LNK2001`/`LNK1120`：unresolved external symbol `?MurmurHash2@@YAIPBXHI@Z`），
   因为本工程编译的 MetaHook / SourceSDK 源码里没有同名定义（已全量 grep 确认）。
 - 原工程的 `vgui_internal.h`（`ClInclude`）在源仓库中已不存在，未迁入。
-- MetaHook、VGUI2Extension 默认使用 FetchContent 获取固定提交，显式 `*_SOURCE_PATH`
+- MetaHook 默认使用 FetchContent 跟踪最新 `main`，VGUI2Extension 默认获取固定提交，显式 `*_SOURCE_PATH`
   跳过对应获取。`hzqst/csv-parser-fork`（分支 `MHSV`，提交 `c393238`）是本仓库唯一 submodule，
   提供 `<single_include/csv.hpp>`，对应原 `CSVParserDirectory`；Capstone、GLEW、GLFW 是
   原 MSBuild 前置检查的遗留物，本插件不需要。

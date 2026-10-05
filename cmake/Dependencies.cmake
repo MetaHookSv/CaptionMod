@@ -50,7 +50,8 @@ function(captionmod_prepare_dependencies)
         include(FetchContent)
         FetchContent_Declare(captionmod_metahook
             GIT_REPOSITORY https://github.com/MetaHookSv/MetaHook
-            GIT_TAG b60ec0f03c60cb7c8c6d3e59c3c38f4753cf1d0d
+            # MetaHook is tracked as a branch: always fetch the latest main.
+            GIT_TAG origin/main
             GIT_SUBMODULES ""
             GIT_SUBMODULES_RECURSE FALSE
             # This SDK directory has no CMakeLists.txt: populate without building the launcher.

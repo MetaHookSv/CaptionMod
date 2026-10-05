@@ -29,7 +29,7 @@ scripts\build-CaptionMod-x86-Release.bat
 
 ## 手动指定源码路径
 
-MetaHook 和 VGUI2Extension 默认自动下载固定版本。需要复用本地源码时，可按需传入以下可选参数：
+MetaHook 默认自动下载最新 `main`，VGUI2Extension 默认自动下载固定版本。需要复用本地源码时，可按需传入以下可选参数：
 
 | 参数 | 本地源码目录 |
 | --- | --- |
@@ -75,6 +75,6 @@ CaptionMod 通过 `scripts/manifests/captionmod.json`（与 MetaHook 同一 sche
 
 LiveBuild 和 Release 共用 `.github/actions/build-windows-x86/action.yml`，在 CaptionMod
 同级目录克隆 MetaHook 和 VGUI2Extension 的 `main` 分支，记录各自的提交 SHA，并显式传入
-`METAHOOK_SOURCE_PATH` 和 `VGUI2EXTENSION_SOURCE_PATH`。本地未指定源码路径时仍使用固定提交。
+`METAHOOK_SOURCE_PATH` 和 `VGUI2EXTENSION_SOURCE_PATH`。本地未指定源码路径时，MetaHook 取最新 `main`，VGUI2Extension 取固定提交。
 
 本工程没有自动化回归测试：原工程仅用 MSBuild 构建该插件，验证方式是干净构建加上 gamedata manifest 门禁。

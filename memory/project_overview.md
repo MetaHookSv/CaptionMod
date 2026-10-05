@@ -38,7 +38,7 @@ VGUI2Extension 的公共接口头文件由独立仓库提供：`VGUI2EXTENSION_S
 
 MetaHook 提供公共 API、SourceSDK、VGUI 源码与 gamedata 查询 API，仅消费其源码，
 不构建宿主可执行文件。指定 `METAHOOK_SOURCE_PATH` 时直接使用外部仓库根目录；
-否则通过 FetchContent 获取固定提交，不使用 MetaHook submodule，也不初始化宿主的递归依赖。
+否则通过 FetchContent 获取最新 `main`，不使用 MetaHook submodule，也不初始化宿主的递归依赖。
 CaptionMod 需要 gamedata API 114 及以上（`QueryGameSymbolStructMember`），代码中以
 `static_assert` 固化该契约。本工程不消费 SDL 或 Capstone 头文件。
 

@@ -32,7 +32,7 @@ and `build/x86/Release`. This project provides plain Debug and Release, no AVX2 
 
 ## Specifying source paths manually
 
-MetaHook and VGUI2Extension are downloaded automatically at fixed versions. To reuse
+MetaHook is downloaded automatically from the latest `main`, and VGUI2Extension at a fixed version. To reuse
 local sources, pass any of these optional parameters:
 
 | Parameter | Local source directory |
@@ -90,7 +90,7 @@ directory is merged by the host launcher's catalog loader.
 LiveBuild and Release share `.github/actions/build-windows-x86/action.yml`. It clones
 the `main` branches of MetaHook and VGUI2Extension beside CaptionMod, records both commit
 SHAs, and passes `METAHOOK_SOURCE_PATH` and `VGUI2EXTENSION_SOURCE_PATH` explicitly.
-Local builds without source paths continue to use pinned commits.
+Local builds without source paths fetch MetaHook from the latest `main` and VGUI2Extension at a pinned commit.
 
 There is no automated regression test suite: the original project built this plugin with
 MSBuild only, so verification is a clean build plus the gamedata manifest gate.
