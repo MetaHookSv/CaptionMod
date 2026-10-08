@@ -25,6 +25,8 @@ pfnUserMsgHook m_pfnSendAudio;
 pfnUserMsgHook m_pfnSayText;
 pfnUserMsgHook m_pfnTextMsg;
 pfnUserMsgHook m_pfnShowMenu;
+pfnUserMsgHook m_pfnMenuResetHUD;
+pfnUserMsgHook m_pfnMenuInitHUD;
 
 int __MsgFunc_TextMsg(const char *pszName, int iSize, void *pbuf)
 {
@@ -1953,6 +1955,26 @@ void CHudMessage::MessageAdd(client_textmessage_t *newMessage, bool bIsDynamicMe
 		m_DynamicTextMessages.emplace_back(newMessage);
 }
 
+int __MsgFunc_MenuResetHUD(const char* pszName, int iSize, void* pbuf)
+{
+	int result = m_pfnMenuResetHUD ? m_pfnMenuResetHUD(pszName, iSize, pbuf) : 1;
+	if (g_bIsSvenCoop)
+		m_HudMenu.Reset();
+	return result;
+}
+
+int __MsgFunc_MenuInitHUD(const char* pszName, int iSize, void* pbuf)
+{
+	int result = m_pfnMenuInitHUD ? m_pfnMenuInitHUD(pszName, iSize, pbuf) : 1;
+	if (g_bIsSvenCoop)
+	{
+		m_HudMenu.Reset();
+		m_HudMenu.m_bitsValidSlots = 0;
+		m_HudMenu.m_bIsASMenu = false;
+	}
+	return result;
+}
+
 int __MsgFunc_ShowMenu(const char* pszName, int iSize, void* pbuf)
 {
 	if (m_HudMenu.MsgFunc_ShowMenu(pszName, iSize, pbuf) != 0)
@@ -1966,19 +1988,36 @@ int __MsgFunc_ShowMenu(const char* pszName, int iSize, void* pbuf)
 void CHudMenu::Init(void)
 {
 	m_pfnShowMenu = HOOK_MESSAGE(ShowMenu);
+	if (g_bIsSvenCoop)
+	{
+		// The replacement menu is not registered in the client's HUD element list.
+		m_pfnMenuResetHUD = g_pMetaHookAPI->HookUserMsg("ResetHUD", __MsgFunc_MenuResetHUD);
+		m_pfnMenuInitHUD = g_pMetaHookAPI->HookUserMsg("InitHUD", __MsgFunc_MenuInitHUD);
+	}
 
 	m_bMenuDisplayed = false;
 	m_bitsValidSlots = 0;
+	m_bIsASMenu = false;
+	m_szMenuString[0] = 0;
+	m_flShutoffTime = 0;
 
 	Reset();
 }
 
 void CHudMenu::Reset(void)
 {
-	m_szMenuString[0] = 0;
 	m_szPrelocalisedMenuString[0] = 0;
 	m_fWaitingForMore = 0;
-	m_flShutoffTime = 0;
+
+	if (g_bIsSvenCoop)
+	{
+		m_bMenuDisplayed = false;
+	}
+	else if (!g_bIsCounterStrike)
+	{
+		m_szMenuString[0] = 0;
+		m_flShutoffTime = 0;
+	}
 }
 
 int CHudMenu::VidInit(void)
@@ -2004,13 +2043,19 @@ int CHudMenu::VidInit(void)
 
 	m_iFontEngineHeight = vgui::surface()->GetFontTall(m_hFont);
 
-	Reset();
+	// Both native clients keep menu state across VidInit.
+	if (!g_bIsSvenCoop && !g_bIsCounterStrike)
+		Reset();
 
 	return 1;
 }
 
 int CHudMenu::Draw(void)
 {
+	// CS keeps its native menu, including viewport visibility and slot handling.
+	if (g_bIsCounterStrike)
+		return 1;
+
 	if (m_flShutoffTime > 0)
 	{
 		if (m_flShutoffTime <= (*cl_time))
@@ -2037,6 +2082,8 @@ int CHudMenu::Draw(void)
 	int border = (gPrivateFuncs.CHud_GetBorderSize && gHud) ? (gPrivateFuncs.CHud_GetBorderSize(gHud, 0) + 5) : 15;
 	
 	int base_x = vgui::scheme()->GetProportionalScaledValue(border);
+	if (g_bIsSvenCoop)
+		base_x = border;
 
 	menu_x = base_x;
 
@@ -2055,9 +2102,23 @@ int CHudMenu::Draw(void)
 	ScreenHeight = si.iHeight;
 
 	int y = (ScreenHeight / 2) - ((nlc / 2) * m_iFontEngineHeight + vgui::scheme()->GetProportionalScaledValue(40));
+	int lineHeight = m_iFontEngineHeight + vgui::scheme()->GetProportionalScaledValue(2);
+	int rightX = ScreenWidth / 2 - border;
+	int maxX = 320;
+	constexpr int LEGACY_MENU_SEGMENT_SIZE = 80;
+	int segmentSize = LEGACY_MENU_SEGMENT_SIZE;
+	if (g_bIsSvenCoop)
+	{
+		// GetBorderSize and SCREENINFO already use screen coordinates.
+		lineHeight = si.iCharHeight;
+		y = (ScreenHeight / 2) - ((nlc / 2) * lineHeight + 40);
+		rightX = ScreenWidth / 2 - base_x;
+		maxX = rightX;
+		segmentSize = MAX_MENU_STRING;
+	}
 	const char *sptr = m_szMenuString;
 	int i;
-	char menubuf[80];
+	char menubuf[MAX_MENU_STRING];
 	const char *ptr;
 
 	while (*sptr)
@@ -2115,7 +2176,7 @@ int CHudMenu::Draw(void)
 			case 'R':
 			{
 				menu_ralign = 1;
-				menu_x = ScreenWidth / 2 - border;
+				menu_x = rightX;
 
 				sptr += 2;
 				break;
@@ -2134,8 +2195,7 @@ int CHudMenu::Draw(void)
 		{
 			menu_ralign = 0;
 			menu_x = base_x;
-			y += m_iFontEngineHeight;
-			y += vgui::scheme()->GetProportionalScaledValue(2);
+			y += lineHeight;
 			sptr += 1;
 			continue;
 		}
@@ -2150,8 +2210,9 @@ int CHudMenu::Draw(void)
 		}
 
 		i = sptr - ptr;
-		strncpy(menubuf, ptr, min(i, sizeof(menubuf)));
-		menubuf[min(i, sizeof(menubuf) - 1)] = 0;
+		int length = min(i, segmentSize - 1);
+		memcpy(menubuf, ptr, length);
+		menubuf[length] = 0;
 
 		if (menu_ralign)
 		{
@@ -2159,7 +2220,7 @@ int CHudMenu::Draw(void)
 		}
 		else
 		{
-			menu_x = DrawHudString(menu_x, y, 320, menubuf, menu_r, menu_g, menu_b);
+			menu_x = DrawHudString(menu_x, y, maxX, menubuf, menu_r, menu_g, menu_b);
 		}
 	}
 
@@ -2180,22 +2241,29 @@ int CHudMenu::DrawHudStringReverse(int xpos, int ypos, int iMinX, char *szString
 
 char *CHudMenu::LocaliseTextString(const char *msg, char *dst_buffer, int buffer_size)
 {
-	char *dst = dst_buffer;
+	if (buffer_size <= 0)
+		return dst_buffer;
 
-	for (char *src = (char *)msg; *src != 0 && buffer_size > 0; buffer_size--)
+	char *dst = dst_buffer;
+	char *dst_end = dst_buffer + buffer_size - 1;
+
+	for (const char *src = msg; *src != 0 && dst < dst_end;)
 	{
 		if (*src == '#')
 		{
 			char word_buf[256] = {0};
-			const char* word_buf_end = word_buf + 255;
-			char *wdst = word_buf, *word_start = src;
+			const char *word_start = src++;
+			const char *word = src;
 
-			for (++src; (*src >= 'A' && *src <= 'z') || (*src >= '0' && *src <= '9') && wdst < word_buf_end; wdst++, src++)
-				*wdst = *src;
+			while ((*src >= 'A' && *src <= 'z') || (*src >= '0' && *src <= '9'))
+				src++;
 
-			*wdst = 0;
-
-			client_textmessage_t *clmsg = gPrivateFuncs.pfnTextMessageGet(word_buf);
+			client_textmessage_t *clmsg = NULL;
+			if (static_cast<size_t>(src - word) < sizeof(word_buf))
+			{
+				memcpy(word_buf, word, src - word);
+				clmsg = gPrivateFuncs.pfnTextMessageGet(word_buf);
+			}
 
 			if (!clmsg || !(clmsg->pMessage))
 			{
@@ -2205,7 +2273,7 @@ char *CHudMenu::LocaliseTextString(const char *msg, char *dst_buffer, int buffer
 				continue;
 			}
 
-			for (const char *wsrc = clmsg->pMessage; *wsrc != 0; wsrc++, dst++)
+			for (const char *wsrc = clmsg->pMessage; *wsrc != 0 && dst < dst_end; wsrc++, dst++)
 				*dst = *wsrc;
 
 			*dst = 0;
@@ -2218,7 +2286,7 @@ char *CHudMenu::LocaliseTextString(const char *msg, char *dst_buffer, int buffer
 		}
 	}
 
-	dst_buffer[buffer_size - 1] = 0;
+	*dst = 0;
 	return dst_buffer;
 }
 
@@ -2235,7 +2303,7 @@ bool CHudMenu::SelectMenuItem(int menu_item)
 
 	if ((menu_item > 0) && (m_bitsValidSlots & (1 << (menu_item - 1))))
 	{
-		if (m_bIsASMenu)
+		if (g_bIsSvenCoop && m_bIsASMenu)
 		{
 			sprintf(szbuf, "as_menuselect %d\n", menu_item);
 			gEngfuncs.pfnClientCmd(szbuf);
@@ -2255,6 +2323,8 @@ bool CHudMenu::SelectMenuItem(int menu_item)
 
 int CHudMenu::MsgFunc_ShowMenu(const char* pszName, int iSize, void* pbuf)
 {
+	// CS has no CaptionMod menu-selection/scoreboard hooks; let its client own
+	// the whole menu lifecycle and interpret all eight NeedMore bits natively.
 	if (g_bIsCounterStrike)
 		return 0;
 
@@ -2268,9 +2338,13 @@ int CHudMenu::MsgFunc_ShowMenu(const char* pszName, int iSize, void* pbuf)
 	m_bitsValidSlots = READ_SHORT();
 
 	int DisplayTime = READ_CHAR();
-	int NeedMoreBits = READ_BYTE();
-	int NeedMore = NeedMoreBits & 0x7F;
-	m_bIsASMenu = ((NeedMoreBits >> 7) & 1) ? true : false;
+	int NeedMore = READ_BYTE();
+	m_bIsASMenu = false;
+	if (g_bIsSvenCoop)
+	{
+		m_bIsASMenu = (NeedMore & 0x80) != 0;
+		NeedMore &= 0x7F;
+	}
 
 	if (DisplayTime > 0)
 		m_flShutoffTime = DisplayTime + (*cl_time);
@@ -2280,9 +2354,9 @@ int CHudMenu::MsgFunc_ShowMenu(const char* pszName, int iSize, void* pbuf)
 	if (m_bitsValidSlots)
 	{
 		if (!m_fWaitingForMore)
-			strncpy(m_szPrelocalisedMenuString, READ_STRING(), MAX_MENU_STRING);
+			V_strncpy(m_szPrelocalisedMenuString, READ_STRING(), sizeof(m_szPrelocalisedMenuString));
 		else
-			strncat(m_szPrelocalisedMenuString, READ_STRING(), MAX_MENU_STRING - strlen(m_szPrelocalisedMenuString));
+			strncat(m_szPrelocalisedMenuString, READ_STRING(), sizeof(m_szPrelocalisedMenuString) - strlen(m_szPrelocalisedMenuString) - 1);
 
 		m_szPrelocalisedMenuString[MAX_MENU_STRING - 1] = 0;
 
@@ -2293,7 +2367,7 @@ int CHudMenu::MsgFunc_ShowMenu(const char* pszName, int iSize, void* pbuf)
 
 			if (KB_ConvertString(m_szMenuString, &temp))
 			{
-				strcpy(m_szMenuString, temp);
+				V_strncpy(m_szMenuString, temp, sizeof(m_szMenuString));
 				free(temp);
 			}
 		}
@@ -2305,7 +2379,7 @@ int CHudMenu::MsgFunc_ShowMenu(const char* pszName, int iSize, void* pbuf)
 		m_bMenuDisplayed = false;
 	}
 
-	m_fWaitingForMore = NeedMore;
+	m_fWaitingForMore = g_bIsSvenCoop ? (NeedMore != 0) : NeedMore;
 	return 1;
 }
 
