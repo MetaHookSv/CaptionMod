@@ -14,87 +14,86 @@ class KeyValues;
 
 typedef struct walk_context_s
 {
-	walk_context_s(void* a, size_t l, int d) : address(a), len(l), depth(d)
-	{
-
-	}
-	void* address;
-	size_t len;
-	int depth;
-}walk_context_t;
+    walk_context_s(void* a, size_t l, int d) : address(a), len(l), depth(d)
+    {
+    }
+    void*  address;
+    size_t len;
+    int    depth;
+} walk_context_t;
 
 typedef struct
 {
-	//Engine Sound
-	sfx_t *(*S_FindName)(const char *name, int *pfInCache);//hooked
-	void (*S_StartDynamicSound)(int entnum, int entchannel, sfx_t *sfx, float *origin, float fvol, float attenuation, int flags, int pitch);//hooked
-	void (*S_StartStaticSound)(int entnum, int entchannel, sfx_t *sfx, float *origin, float fvol, float attenuation, int flags, int pitch);//hooked
-	sfxcache_t *(*S_LoadSound)(sfx_t *s, channel_t *ch);
-	sentenceEntry_s*(*SequenceGetSentenceByIndex)(unsigned int);
+    //Engine Sound
+    sfx_t* (*S_FindName)(const char* name, int* pfInCache);                                                                                  //hooked
+    void (*S_StartDynamicSound)(int entnum, int entchannel, sfx_t* sfx, float* origin, float fvol, float attenuation, int flags, int pitch); //hooked
+    void (*S_StartStaticSound)(int entnum, int entchannel, sfx_t* sfx, float* origin, float fvol, float attenuation, int flags, int pitch);  //hooked
+    sfxcache_t* (*S_LoadSound)(sfx_t* s, channel_t* ch);
+    sentenceEntry_s* (*SequenceGetSentenceByIndex)(unsigned int);
 
-	//SC ClientDLL
-	void (__fastcall*SCClient_SoundEngine_PlayFMODSound)(void *pSoundEngine, int, int flags, int entindex, float *origin, int channel, const char *name, float fvol, float attenuation, int extraflags, int pitch, int sentenceIndex, float soundLength);
-	const char *(__fastcall* SCClient_SoundEngine_LookupSoundBySentenceIndex)(void* pSoundEngine, int, int sentenceIndex);
-	void* (__fastcall* SCClient_SoundEngine_LookupSoundBySample)(void* pSoundEngine, int, const char *sampleName);
-	bool (__fastcall* SCClient_SoundEngine_LoadSoundList)(void* pSoundEngine, int);
-	//Address of the `CClient_SoundEngine` singleton pointer
-	//(`CClient_SoundEngine_m_pSoundEngine`). The catalog publishes only this
-	//backing global, not the engine's lazy-construction accessor, so the pointer
-	//itself can be null until the engine has been constructed.
-	void** SCClient_soundengine;
-	uint32_t SCClient_soundengine_maxsentences;
+    //SC ClientDLL
+    void(__fastcall* SCClient_SoundEngine_PlayFMODSound)(void* pSoundEngine, int, int flags, int entindex, float* origin, int channel, const char* name, float fvol, float attenuation, int extraflags, int pitch, int sentenceIndex, float soundLength);
+    const char*(__fastcall* SCClient_SoundEngine_LookupSoundBySentenceIndex)(void* pSoundEngine, int, int sentenceIndex);
+    void*(__fastcall* SCClient_SoundEngine_LookupSoundBySample)(void* pSoundEngine, int, const char* sampleName);
+    bool(__fastcall* SCClient_SoundEngine_LoadSoundList)(void* pSoundEngine, int);
+    //Address of the `CClient_SoundEngine` singleton pointer
+    //(`CClient_SoundEngine_m_pSoundEngine`). The catalog publishes only this
+    //backing global, not the engine's lazy-construction accessor, so the pointer
+    //itself can be null until the engine has been constructed.
+    void**   SCClient_soundengine;
+    uint32_t SCClient_soundengine_maxsentences;
 
-	//FMOD
+    //FMOD
 
-	int(__stdcall*FMOD_Sound_getLength)(void * FMOD_Sound, void* output, int type);//?getLength@Sound@FMOD@@QAG?AW4FMOD_RESULT@@PAII@Z
-	int(__stdcall*FMOD_System_playSound)(void* FMOD_System, int channelid, void* FMOD_Sound, bool paused, void** FMOD_Channel);//?playSound@System@FMOD@@QAG?AW4FMOD_RESULT@@W4FMOD_CHANNELINDEX@@PAVSound@2@_NPAPAVChannel@2@@Z
+    int(__stdcall* FMOD_Sound_getLength)(void* FMOD_Sound, void* output, int type);                                              //?getLength@Sound@FMOD@@QAG?AW4FMOD_RESULT@@PAII@Z
+    int(__stdcall* FMOD_System_playSound)(void* FMOD_System, int channelid, void* FMOD_Sound, bool paused, void** FMOD_Channel); //?playSound@System@FMOD@@QAG?AW4FMOD_RESULT@@W4FMOD_CHANNELINDEX@@PAVSound@2@_NPAPAVChannel@2@@Z
 
-	//ClientDLL
-	float* (*GetClientColor)(int clientIndex);
+    //ClientDLL
+    float* (*GetClientColor)(int clientIndex);
 
-	//ClientDLL Counter-Strike
-	float *(*GetTextColor)(int colorNum, int clientIndex);
-	//Address of the `g_LocationColor[3]` array, the `TEXTCOLOR_LOCATION` fallback
-	//for the clients that publish no `GetTextColor`.
-	void* LocationColor;
+    //ClientDLL Counter-Strike
+    float* (*GetTextColor)(int colorNum, int clientIndex);
+    //Address of the `g_LocationColor[3]` array, the `TEXTCOLOR_LOCATION` fallback
+    //for the clients that publish no `GetTextColor`.
+    void* LocationColor;
 
-	//ClientDLL
-	bool (__fastcall *GameViewport_AllowedToPrintText)(void *pthis, int);
-	bool (__fastcall *GameViewport_IsScoreBoardVisible)(void *pthis, int);
-	void (__fastcall *WeaponsResource_SelectSlot)(void *pthis, int, int iSlot, int fAdvance, int iDirection);
-	int (__fastcall *CHud_GetBorderSize)(void *pthis, int);
+    //ClientDLL
+    bool(__fastcall* GameViewport_AllowedToPrintText)(void* pthis, int);
+    bool(__fastcall* GameViewport_IsScoreBoardVisible)(void* pthis, int);
+    void(__fastcall* WeaponsResource_SelectSlot)(void* pthis, int, int iSlot, int fAdvance, int iDirection);
+    int(__fastcall* CHud_GetBorderSize)(void* pthis, int);
 
-	//Engine funcs hook
-	int (*pfnServerCmdUnreliable)(const char* szCmdString);
-	client_textmessage_t *(*pfnTextMessageGet)(const char *pName);
-	void (*TextMessageParse)(byte* pMemFile, int fileSize);
+    //Engine funcs hook
+    int (*pfnServerCmdUnreliable)(const char* szCmdString);
+    client_textmessage_t* (*pfnTextMessageGet)(const char* pName);
+    void (*TextMessageParse)(byte* pMemFile, int fileSize);
 
-	//Engine Misc
-	void (*COM_ExplainDisconnection)(qboolean bPrint, const char* fmt, ...);
-	void (*COM_ExtendedExplainDisconnection)(qboolean bPrint, const char* fmt, ...);
+    //Engine Misc
+    void (*COM_ExplainDisconnection)(qboolean bPrint, const char* fmt, ...);
+    void (*COM_ExtendedExplainDisconnection)(qboolean bPrint, const char* fmt, ...);
 
-	//Commands
-	void(*MessageMode_f)(void);
-	void(*MessageMode2_f)(void);
+    //Commands
+    void (*MessageMode_f)(void);
+    void (*MessageMode2_f)(void);
 
-}private_funcs_t;
+} private_funcs_t;
 
-extern void * gViewport;
-extern void *gHud;
+extern void* gViewport;
+extern void* gHud;
 
-extern double *cl_time;
-extern double *cl_oldtime;
+extern double* cl_time;
+extern double* cl_oldtime;
 
-extern int *cl_viewentity;
+extern int* cl_viewentity;
 
-extern vec3_t *listener_origin;
+extern vec3_t* listener_origin;
 
-extern char *(*rgpszrawsentence)[CVOXFILESENTENCEMAX];
-extern int *cszrawsentences;
+extern char* (*rgpszrawsentence)[CVOXFILESENTENCEMAX];
+extern int* cszrawsentences;
 
 extern private_funcs_t gPrivateFuncs;
 
-cl_entity_t *EngineGetViewEntity(void);
+cl_entity_t* EngineGetViewEntity(void);
 
 bool SCR_IsLoadingVisible(void);
 
