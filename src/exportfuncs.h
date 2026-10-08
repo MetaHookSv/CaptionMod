@@ -17,30 +17,30 @@
 
 extern cl_enginefunc_t gEngfuncs;
 
-char * NewV_strncpy(char *a1, const char *a2, size_t a3);
+char* NewV_strncpy(char* a1, const char* a2, size_t a3);
 
 void HUD_Init(void);
-int HUD_VidInit(void);
+int  HUD_VidInit(void);
 void HUD_Frame(double time);
-int HUD_Redraw(float time, int intermission);
+int  HUD_Redraw(float time, int intermission);
 void HUD_Shutdown(void);
 
-client_textmessage_t *pfnTextMessageGet(const char *pName);
-void TextMessageParse(byte* pMemFile, int fileSize);
+client_textmessage_t* pfnTextMessageGet(const char* pName);
+void                  TextMessageParse(byte* pMemFile, int fileSize);
 
 void COM_ExplainDisconnection(qboolean bPrint, const char* fmt, ...);
 
-void *NewClientFactory(void);
+void* NewClientFactory(void);
 
-const char *GetBaseDirectory();
+const char* GetBaseDirectory();
 
 //int FileSystem_SetGameDirectory(const char *pDefaultDir, const char *pGameDir);
 
-IBaseInterface *NewCreateInterface(const char *pName, int *pReturnCode);
+IBaseInterface* NewCreateInterface(const char* pName, int* pReturnCode);
 
-void S_StartDynamicSound(int entnum, int entchannel, sfx_t *sfx, float *origin, float fvol, float attenuation, int flags, int pitch);
-void S_StartStaticSound(int entnum, int entchannel, sfx_t *sfx, float *origin, float fvol, float attenuation, int flags, int pitch);
-sfx_t *S_FindName(const char *name, int *pfInCache);
+void   S_StartDynamicSound(int entnum, int entchannel, sfx_t* sfx, float* origin, float fvol, float attenuation, int flags, int pitch);
+void   S_StartStaticSound(int entnum, int entchannel, sfx_t* sfx, float* origin, float fvol, float attenuation, int flags, int pitch);
+sfx_t* S_FindName(const char* name, int* pfInCache);
 
 void MessageMode_f(void);
 void MessageMode2_f(void);
@@ -52,15 +52,15 @@ unsigned long GetVoiceBanMask();
 
 //Resolve the `CClient_SoundEngine` lazy singleton through the published backing
 //pointer; returns nullptr while the engine has not been constructed yet.
-void* SCClient_SoundEngine_GetInstance(void);
+void*           SCClient_SoundEngine_GetInstance(void);
 bool __fastcall SCClient_SoundEngine_LoadSoundList(void* pSoundEngine, int);
 void __fastcall SCClient_SoundEngine_PlayFMODSound(void* pSoundEngine, int, int flags, int entindex, float* origin, int channel, const char* name, float fvol, float attenuation, int extraflags, int pitch, int sentenceIndex, float soundLength);
-int __stdcall FMOD_System_playSound(void* FMOD_System, int channelid, void* FMOD_Sound, bool paused, void** FMOD_Channel);
-void __fastcall WeaponsResource_SelectSlot(void *pthis, int, int iSlot, int fAdvance, int iDirection);
+int __stdcall   FMOD_System_playSound(void* FMOD_System, int channelid, void* FMOD_Sound, bool paused, void** FMOD_Channel);
+void __fastcall WeaponsResource_SelectSlot(void* pthis, int, int iSlot, int fAdvance, int iDirection);
 
 extern cvar_t* cap_debug;
 extern cvar_t* cap_enabled;
 extern cvar_t* cap_max_distance;
 extern cvar_t* cap_min_avol;
-extern cvar_t *cap_netmessage;
-extern cvar_t *cap_hudmessage;
+extern cvar_t* cap_netmessage;
+extern cvar_t* cap_hudmessage;
