@@ -135,14 +135,14 @@ Scheme
 		ScrollBar.Wide					17
 
 		ScrollBarButton.FgColor				"White"
-		ScrollBarButton.BgColor				"Blank"
+		ScrollBarButton.BgColor				"64 64 64 255"
 		ScrollBarButton.ArmedFgColor		"White"
-		ScrollBarButton.ArmedBgColor		"Blank"
+		ScrollBarButton.ArmedBgColor		"96 96 96 255"
 		ScrollBarButton.DepressedFgColor	"White"
-		ScrollBarButton.DepressedBgColor	"Blank"
+		ScrollBarButton.DepressedBgColor	"32 32 32 255"
 
-		ScrollBarSlider.FgColor				"Blank"			// nob color
-		ScrollBarSlider.BgColor				"255 255 255 64"	// slider background color
+		ScrollBarSlider.FgColor				"160 160 160 255"	// nob color
+		ScrollBarSlider.BgColor				"32 32 32 255"	// slider background color
 
 		SectionedListPanel.HeaderTextColor	"White"
 		SectionedListPanel.HeaderBgColor	"Blank"
@@ -170,6 +170,9 @@ Scheme
 		TextEntry.SelectedBgColor	"Orange"
 		TextEntry.OutOfFocusSelectedBgColor	"255 155 0 128"
 		TextEntry.FocusEdgeColor	"0 0 0 196"
+
+		TextEntry.LanguageIDFgColor	"White"
+		TextEntry.LanguageIDBgColor	"64 64 64 255"
 
 		ToggleButton.SelectedTextColor	"White"
 
