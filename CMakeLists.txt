@@ -57,7 +57,9 @@ target_compile_options(captionmod_settings INTERFACE /permissive /W3
     $<$<CONFIG:Release>:/wd4091>)
 
 include(cmake/Sources.cmake)
+include(cmake/SourceGroups.cmake)
 add_library(CaptionMod SHARED ${CAPTIONMOD_SOURCES})
+captionmod_assign_source_groups(CaptionMod)
 target_link_libraries(CaptionMod PRIVATE captionmod_settings)
 target_compile_definitions(CaptionMod PRIVATE $<$<CONFIG:Debug>:_DEBUG>)
 target_compile_options(CaptionMod PRIVATE /MP /Zi)
