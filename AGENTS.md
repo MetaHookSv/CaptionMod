@@ -18,6 +18,7 @@ This file provides guidance and important rules working with code in this reposi
 - Engine/client private symbol inventory: `privatevars/captionmod-privatevars.md` (also `captionmod-privatevars`)
 - Build commands, dependency pinning, gamedata sync, verification status: `build_and_verification`
 - Coding conventions: `CodeStyles`
+- C/C++ formatting toolchain, commands and check scope: `CppFormatting`
 
 ### When notes are insufficient: source entry points (query and read on demand)
 
