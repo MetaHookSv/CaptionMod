@@ -56,8 +56,8 @@ scripts\build-CaptionMod-x86-Release.bat ^
 
 ## csv-parser
 
-字典解析器以 `hzqst/csv-parser-fork` submodule 形式使用，位于
-`thirdparty/csv-parser-fork`（分支 `MHSV`），对应原工程的 `CSVParserDirectory`，
+字典解析器以 `hzqst/csv-parser` submodule 形式使用，位于
+`thirdparty/csv-parser`（分支 `MHSV`），对应原工程的 `CSVParserDirectory`，
 以 `<single_include/csv.hpp>` 引入。CMake 首次配置时自动初始化。
 这是本仓库唯一的 submodule。
 

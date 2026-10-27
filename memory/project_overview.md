@@ -44,8 +44,8 @@ CaptionMod 需要 gamedata API 114 及以上（`QueryGameSymbolStructMember`）�
 
 ## 字典解析器
 
-字典解析器 `hzqst/csv-parser-fork`（分支 `MHSV`）是本仓库唯一的 submodule，位于
-`thirdparty/csv-parser-fork`，以 `<single_include/csv.hpp>` 引入，对应原工程的
+字典解析器 `hzqst/csv-parser`（分支 `MHSV`）是本仓库唯一的 submodule，位于
+`thirdparty/csv-parser`，以 `<single_include/csv.hpp>` 引入，对应原工程的
 `CSVParserDirectory`；CMake 首次配置自动初始化。
 
 私有符号解析必须遵循宿主 gamedata 契约，不能为已发布的符号恢复扫描 fallback；

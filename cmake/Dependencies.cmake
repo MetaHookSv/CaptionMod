@@ -75,5 +75,5 @@ function(captionmod_prepare_dependencies)
     set(VGUI2EXTENSION_SOURCE_PATH "${vgui2extension_source}" PARENT_SCOPE)
     message(STATUS "VGUI2EXTENSION_SOURCE_PATH: ${vgui2extension_source}")
 
-    captionmod_init_submodule(csv-parser-fork)
+    captionmod_init_submodule(csv-parser)
 endfunction()

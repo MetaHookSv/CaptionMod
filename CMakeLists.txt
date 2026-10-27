@@ -45,7 +45,7 @@ target_include_directories(captionmod_settings INTERFACE
     "${METAHOOK_SOURCE_PATH}/include/SourceSDK/vstdlib"
     # Matches the original project's CSVParserDirectory: the csv.hpp consumer
     # includes <single_include/csv.hpp>.
-    "${PROJECT_SOURCE_DIR}/thirdparty/csv-parser-fork"
+    "${PROJECT_SOURCE_DIR}/thirdparty/csv-parser"
     "${METAHOOK_SOURCE_PATH}/include/SteamSDK"
 )
 target_compile_definitions(captionmod_settings INTERFACE WIN32 _WINDOWS _USRDLL _MBCS

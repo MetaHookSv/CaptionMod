@@ -63,8 +63,8 @@ Use `-DNAME=value` to change a cached value; `-DNAME=` restores automatic fetchi
 
 ## csv-parser
 
-The dictionary parser is consumed as the `hzqst/csv-parser-fork` submodule at
-`thirdparty/csv-parser-fork` (branch `MHSV`), matching the original project's
+The dictionary parser is consumed as the `hzqst/csv-parser` submodule at
+`thirdparty/csv-parser` (branch `MHSV`), matching the original project's
 `CSVParserDirectory`, which is included as `<single_include/csv.hpp>`. CMake initializes
 it during the first configure. This is the only submodule in this repository.
 
