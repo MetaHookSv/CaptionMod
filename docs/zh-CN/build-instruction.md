@@ -13,7 +13,7 @@ CaptionMod 自身使用的公共接口是 `include/Interface/` 下的 VGUI2Exten
 - Windows、Visual Studio 2022 的 C++ 桌面开发工具和 Windows SDK
 - CMake 3.21+
 - Git
-- 首次配置需要网络：CMake 通过 FetchContent 获取 MetaHook 和 VGUI2Extension，初始化 csv-parser submodule，并下载、校验和解压 VC-LTL 5.3.1
+- 首次配置需要网络：CMake 通过 FetchContent 获取 MetaHook 和 VGUI2Extension，并初始化 csv-parser submodule
 
 ## 构建
 

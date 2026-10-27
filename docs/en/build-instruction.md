@@ -15,7 +15,7 @@ CaptionMod's own public interface is the VGUI2Extension interface set in `includ
 - Windows with Visual Studio 2022 C++ desktop workload and the Windows SDK
 - CMake 3.21+
 - Git
-- Network access on first configure: CMake fetches MetaHook and VGUI2Extension via FetchContent, initializes the csv-parser submodule, and downloads, verifies and extracts VC-LTL 5.3.1
+- Network access on first configure: CMake fetches MetaHook and VGUI2Extension via FetchContent and initializes the csv-parser submodule
 
 ## Build
 

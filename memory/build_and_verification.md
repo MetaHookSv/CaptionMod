@@ -47,7 +47,7 @@ CMake target 依赖，统一安装到 `install/x86/<configuration>/`。
 ## 本次实测（2026-10-03）
 
 环境：Windows 11，Visual Studio 2022 Community，MSVC 19.44.35228.0，
-Windows SDK 10.0.26100.0，CMake 3.31（VC-LTL 5.3.1 复用已缓存包）。
+Windows SDK 10.0.26100.0，CMake 3.31。
 外部源码为同级仓库 `D:/MetaHookSv-org/MetaHook`（`ace5d9f7`）与
 `D:/MetaHookSv-org/VGUI2Extension`（`834b7f7a`，工作区干净）。
 
@@ -61,8 +61,7 @@ Windows SDK 10.0.26100.0，CMake 3.31（VC-LTL 5.3.1 复用已缓存包）。
 | 裁剪结果 | cstrike-10210/czero-10210 各 2 条（`GetClientColor`+`g_LocationColor`）、其余 cstrike/czero 3 条、czeror 1 条、hl/cof 15 条、svencoop 28 条 |
 | 安装布局 | `svencoop/captionmod` 18、`svencoop_hidpi/captionmod` 3、`gearbox/captionmod` 3、`echoes/captionmod` 4、`svencoop_schinese/maps` 324、plugins 2、gamedata 22 个文件 |
 | DLL PE | Debug / Release 均为 x86 DLL（Machine 0x014c），导出 `CreateInterface`；Release 973,312 字节 |
-| CRT | 两者均导入 `msvcrt.dll`（VC-LTL） |
-| 生成工程设置 | 两配置 `LanguageStandard=stdcpp20`，Debug `MultiThreadedDebug` / Release `MultiThreaded`，包含 VC-LTL 目录，无 `D:/MetaHookSv` 引用 |
+| 生成工程设置 | 两配置 `LanguageStandard=stdcpp20`，Debug `MultiThreadedDebug` / Release `MultiThreaded`，无 `D:/MetaHookSv` 引用 |
 | 字节一致 | 26/27 源码文件与源仓库 blob 逐字节一致（仅 `exportfuncs.cpp` 为上述必需修正）；352 个运行资源工作文件逐字节一致 |
 | `dictionary.csv` 换行 | 源仓库该文件的 blob 是 CRLF、工作区文件却是 LF（`git diff` 干净，属源仓库历史遗留）；新仓库按工作区实际内容（LF）入库，与插件在源 checkout 中读取的字节一致。`svencoop/captionmod/dictionary.csv` 因此是唯一 blob 与源仓库不同的资源，其余 351 个资源的 git blob 哈希完全一致 |
 | 无效 `METAHOOK_SOURCE_PATH` | configure 阶段返回 1，提示 `include/metahook.h` 缺失 |

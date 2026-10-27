@@ -1,5 +1,3 @@
-set(CAPTIONMOD_DEPENDENCY_CACHE_DIR "${PROJECT_SOURCE_DIR}/thirdparty/cache" CACHE PATH "Downloaded dependency cache")
-set(VC_LTL_Root "${CAPTIONMOD_DEPENDENCY_CACHE_DIR}/VC-LTL-5.3.1" CACHE PATH "VC-LTL binary package root")
 set(METAHOOK_SOURCE_PATH "$ENV{METAHOOK_SOURCE_PATH}" CACHE PATH "MetaHook source tree; empty fetches the pinned SDK")
 set(VGUI2EXTENSION_SOURCE_PATH "$ENV{VGUI2EXTENSION_SOURCE_PATH}" CACHE PATH "VGUI2Extension source tree providing its public interface headers; empty fetches the pinned commit")
 
@@ -78,6 +76,4 @@ function(captionmod_prepare_dependencies)
     message(STATUS "VGUI2EXTENSION_SOURCE_PATH: ${vgui2extension_source}")
 
     captionmod_init_submodule(csv-parser-fork)
-    include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/VCLTL.cmake")
-    captionmod_prepare_vcltl()
 endfunction()
